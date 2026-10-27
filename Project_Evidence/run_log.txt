@@ -1,0 +1,72 @@
+LEO SATELLITE COLLISION RISK PREDICTION
+Execution Log — Paper 5 Bootstrap Evaluation
+============================================
+
+Source of this log:
+Transcribed from the execution output supplied by the project author.
+This file is not a raw terminal capture; retain the original notebook output or take a screenshot for execution evidence.
+
+Models:
+- Last-risk baseline
+- Hist Gradient Boosting
+- LightGBM
+
+Input rows: 41,500
+Events per model: 8,300
+Missions: 19
+Bootstrap repetitions: 2,000
+
+Bootstrap progress:
+- Completed 500 of 2,000 bootstrap iterations
+- Completed 1,000 of 2,000 bootstrap iterations
+- Completed 1,500 of 2,000 bootstrap iterations
+- Completed 2,000 of 2,000 bootstrap iterations
+
+POOLED OOF POINT ESTIMATES
+--------------------------
+Model                    PR-AUC    Precision    Recall      F2    FP    FN
+Last-risk baseline       0.4008    0.3476       0.8079    0.6387  229   29
+Hist Gradient Boosting   0.5007    0.4413       0.7219    0.6404  138   42
+LightGBM                 0.4923    0.3459       0.7881    0.6276  225   32
+
+95% MISSION-BOOTSTRAP CONFIDENCE INTERVALS
+------------------------------------------
+Model                    PR-AUC estimate [95% CI]     Precision [95% CI]
+Last-risk baseline       0.4008 [0.2812, 0.5208]      0.3476 [0.2605, 0.4094]
+Hist Gradient Boosting   0.5007 [0.3750, 0.6054]      0.4413 [0.3605, 0.5131]
+LightGBM                 0.4923 [0.3635, 0.5988]      0.3459 [0.2789, 0.4177]
+
+Recall [95% CI]:
+- Last-risk baseline: 0.8079 [0.7073, 0.8846]
+- Hist Gradient Boosting: 0.7219 [0.6000, 0.8174]
+- LightGBM: 0.7881 [0.6526, 0.8793]
+
+F2 [95% CI]:
+- Last-risk baseline: 0.6387 [0.5393, 0.7024]
+- Hist Gradient Boosting: 0.6404 [0.5490, 0.7011]
+- LightGBM: 0.6276 [0.5398, 0.6828]
+
+Paired differences versus the last-risk baseline:
+- Hist Gradient Boosting PR-AUC difference: +0.0999; 95% CI [0.0111, 0.1697]; fraction of bootstrap comparisons positive: 0.9855
+- Hist Gradient Boosting F2 difference: +0.0017; 95% CI [-0.0254, 0.0355]; fraction positive: 0.5295
+- Hist Gradient Boosting recall difference: -0.0861; 95% CI [-0.1304, -0.0515]; fraction positive: 0.0000
+- LightGBM PR-AUC difference: +0.0915; 95% CI [-0.0021, 0.1717]; fraction positive: 0.9730
+- LightGBM F2 difference: -0.0111; 95% CI [-0.0542, 0.0481]; fraction positive: 0.2995
+- LightGBM recall difference: -0.0199; 95% CI [-0.0874, 0.0321]; fraction positive: 0.1750
+
+Reported save location:
+ /marimo/outputs/paper4
+
+Interpretation for project documentation:
+- Hist Gradient Boosting has the highest reported PR-AUC among these three models.
+- Its PR-AUC paired difference versus the baseline has a 95% interval above zero in this reported bootstrap analysis.
+- Its F2 score is only slightly higher than the baseline; the paired-difference interval includes zero, so this output does not establish a clear F2 improvement.
+- Hist Gradient Boosting has lower recall than the last-risk baseline at the reported threshold, and more false negatives (42 versus 29).
+- LightGBM's PR-AUC difference interval includes zero; do not describe its improvement over the baseline as statistically established from this output alone.
+- These metrics are specific to the reported evaluation and threshold. They are not an official ESA competition score or proof of operational collision-avoidance capability.
+
+Output files reported by the notebook:
+- paper5_bootstrap_confidence_intervals.csv
+- paper5_bootstrap_samples.csv
+- paper5_paired_model_comparisons.csv
+- paper5_point_estimates.csv

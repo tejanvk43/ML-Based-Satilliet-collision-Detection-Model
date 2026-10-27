@@ -1,0 +1,53 @@
+LEO SATELLITE COLLISION RISK PREDICTION
+Dataset Information
+===================
+
+Dataset name:
+ESA Kelvins Collision Avoidance Challenge dataset (as used in this project)
+
+Dataset archive used by the project:
+Collision_Avoidance_Challenge_Dataset.zip
+
+Archive download URL:
+https://drive.google.com/file/d/1MESuFeOgnZ9tfX64IZZNttfgJCZr_qbm/view
+
+Raw data member:
+raw_data_2015-2019.gz
+
+Reported raw dataset dimensions:
+199,082 rows x 103 columns
+
+Project cohort reported in the available project notes:
+- 8,300 conjunction events in the common five-lead-time cohort
+- 41,500 event/lead-time rows (8,300 events x 5 lead times)
+- 19 missions
+- 151 positive events in the common cohort (about 1.82%)
+- Five lead times: 5, 4, 3, 2, and 1 day(s) before TCA
+
+Important:
+The figures above come from the project's previously reported dataset/audit outputs.
+Confirm them against the final run's cohort report before treating them as the final dataset statistics.
+
+Important fields mentioned in the project:
+- event_id: identifier used to group observations belonging to a conjunction event
+- time_to_tca: time remaining until the time of closest approach (TCA)
+- risk: risk-related value used to construct the target and/or baseline
+- mission_id: mission identifier used for grouping and mission-held-out validation
+
+Target/label definition:
+The project notes specify HIGH_RISK = -6.0 and FINAL_TCA_MAX = 1.0.
+Use the exact label-generation function in the final source code to describe the positive-class rule in the submitted report. Do not infer or change the rule from this file alone.
+
+Preprocessing and feature construction described in the project:
+1. Load the compressed raw dataset from the ZIP archive.
+2. Convert infinite values to missing values.
+3. Treat numeric magnitudes greater than 1e30 as invalid/missing values; this also handles extreme covariance determinant values.
+4. For each event and prediction lead time, use only observations satisfying time_to_tca >= the selected lead time.
+5. Construct event-level features from the latest eligible observation and aggregate history, including features such as n_cdms, risk_max, risk_min, risk_mean, risk_delta, tca_span, and miss_distance_delta where available.
+6. Keep mission_id for grouping/validation; do not use it as a predictor.
+7. Evaluate models using out-of-fold predictions and mission-held-out validation where reported.
+
+Reproducibility notes:
+- Record the final run date and package versions separately if required.
+- The Drive URL above is the archive URL used in the project notes; retain any original ESA/Kelvins attribution and licensing terms that accompany the dataset.
+- Do not redistribute the raw dataset unless permitted by its terms.

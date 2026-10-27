@@ -1,0 +1,99 @@
+As of estimations done in January 2019, more than 34,000 objects with a size larger than 10cm are orbiting our planet.
+Of these, 22,300 are tracked by the Space Surveillance Network and their position released in the form of a globally shared catalogue. 
+ESA's Space Debris Office supports collision avoidance activities covering the ESA missions Aeolus, 
+Cryosat-2 and the constellation of Swarm-A/B/C in low-Earth orbit and Cluster-II in highly eccentric orbit approaching
+the Geostationary (GEO) region. On top of these, more than a dozen spacecraft of partner agencies and commercial operators are supported.
+
+In the context of this activity, the orbits of these satellites are propagated and when a close approach with any object
+in the catalogue is detected a Conjunction Data Message (CDM) is assembled and released. Each CDM contains multiple attributes
+about the approach, such as the identity of the satellite in question, the object type of the potential collider, 
+the time of closest approach (TCA), the uncertainty (i.e. covariances), etc. 
+It also contains a self-reported risk, which is computed using some of the attributes from the CDM. 
+In the days following the first CDM, as the uncertainties of the objects positions become smaller, other CDMs are released 
+refining the knowledge acquired on the close encounter.
+
+The dataset is a collection of CDMs received by ESA from 2015 to 2019. The CDMs have been anonymised for distribution. 
+ESA thanks the US Space Surveillance Network for the provision of surveillance data supporting safe operations of ESA’s spacecraft. 
+In addition, we are grateful to the agreement which allows to publicly release the current dataset.
+
+Columns Description
+The dataset is represented as a table, where each row correspond to a single CDM, and each CDM contains 103 recorded
+characteristics/features. There are thus 103 columns, which we describe below. The dataset is made of several unique collision/close
+approach events, which are identified in the event_id column. In turn, each collision event is made of several CDMs recorded over time. 
+Therefore, a single collision event can be thought of as a times series of CDMs. 
+From these CDMs, for every collision event, we are interested in predicting the final risk which is computed in the last CDM 
+of the time series (i.e. the risk value in the last row of each collision event).
+
+For the column description, we first describe columns which have unique names and then the columns whose name difference 
+only depends on whether they are referring to the target object (if the column name starts with a t) or the chaser object 
+(if the column name starts with a c). Here, target refers to the ESA satellites while chaser refers to the space debris/object 
+we want to avoid. describe the column names shared for both the chaser and the target, we replace t and c with the placeholder x. 
+For instance, c_sigma_r and t_sigma_r both correspond to the description of x_sigma_r.
+
+Note that all the columns are numerical except for c_object_type.
+
+Uniquely Named Columns
+risk:self-computed value at the epoch of each CDM [base 10 log].
+event_id: unique id per collision event
+time_to_tca: Time interval between CDM creation and time-of-closest approach [days]
+mission_id: identifier of mission that will be affected
+max_risk_estimate: maximum collision probability obtained by scaling combined covariance
+max_risk_scaling: scaling factor used to compute maximum collision probability
+miss_distance: relative position between chaser & target at tca [m]
+relative_speed: relative speed between chaser & target at tca [m/s]
+relative_position_n: relative position between chaser & target: normal (cross-track) [m]
+relative_position_r: relative position between chaser & target: radial [m]
+relative_position_t: relative position between chaser & target: transverse (along-track) [m]
+relative_velocity_n: relative velocity between chaser & target: normal (cross-track) [m/s]
+relative_velocity_r: relative velocity between chaser & target: radial [m/s]
+relative_velocity_t: relative velocity between chaser & target: transverse (along-track) [m/s]
+c_object_type: object type which is at collision risk with satellite
+geocentric_latitude: Latitude of conjunction point [deg]
+azimuth: relative velocity vector: azimuth angle [deg]
+elevation: relative velocity vector: elevation angle [deg]
+mahalanobis_distance: miss distance scaled with uncertainty
+F10: 10.7 cm radio flux index [10−22 W/(m2 Hz)]
+AP: daily planetary geomagnetic amplitude index
+F3M: 81-day running mean of F10.7 (over 3 solar rotations) [10−22 W/(m2 Hz)]
+SSN: Wolf sunspot number
+Shared Column Names Between the Chaser and the Target Object
+x_sigma_rdot: covariance; radial velocity standard deviation (sigma) [m/s]
+x_sigma_n: covariance; (cross-track) position standard deviation (sigma) [m]
+x_cn_r: covariance; correlation of normal (cross-track) position vs radial position
+x_cn_t: covariance; correlation of normal (cross-track) position vs transverse (along-track) position
+x_cndot_n: covariance; correlation of normal (cross-track) velocity vs normal (cross-track) position
+x_sigma_ndot: covariance; normal (cross-track) velocity standard deviation (sigma) [m/s]
+x_cndot_r: covariance; correlation of normal (cross-track) velocity vs radial position
+x_cndot_rdot: covariance; correlation of normal (cross-track) velocity vs radial velocity
+x_cndot_t: covariance; correlation of normal (cross-track) velocity vs transverse (along-track) position
+x_cndot_tdot: covariance; correlation of normal (cross-track) velocity vs transverse (along-track) velocity
+x_sigma_r: covariance; radial position standard deviation (sigma) [m]
+x_ct_r: covariance; correlation of transverse (along-track) position vs radial position
+x_sigma_t: covariance; transverse (along-track) position standard deviation (sigma) [m]
+x_ctdot_n: covariance; correlation of transverse (along-track) velocity vs normal (cross-track) position
+x_crdot_n: covariance; correlation of radial velocity vs normal (cross-track) position
+x_crdot_t: covariance; correlation of radial velocity vs transverse (along-track) position
+x_crdot_r: covariance; correlation of radial velocity vs radial position
+x_ctdot_r: covariance; correlation of transverse (along-track) velocity vs radial position
+x_ctdot_rdot: covariance; correlation of transverse (along-track) velocity vs radial velocity
+x_ctdot_t: covariance; correlation of transverse (along-track) velocity vs transverse (along-track) position
+x_sigma_tdot: covariance; transverse (along-track) velocity standard deviation (sigma) [m/s]
+x_position_covariance_det: determinant of covariance (~volume)
+x_cd_area_over_mass: ballistic coefficient [m2/kg]
+x_cr_area_over_mass: solar radiation coefficient . A/m (ballistic coefficient equivalent)
+x_h_apo: apogee (-Rearth) [km]
+x_h_per: perigee (-Rearth)[km]
+x_ecc: eccentricity
+x_j2k_inc: inclination [deg]
+x_j2k_sma: semi-major axis [km]
+x_sedr: energy dissipation rate [W/kg]
+x_span: size used by the collision risk computation algorithm (minimum 2 m diameter assumed for the chaser) [m]
+x_rcs_estimate: radar cross-sectional area [m2]
+x_actual_od_span: actual length of update interval for orbit determination [days]
+x_obs_available: number of observations available for orbit determination (per CDM)
+x_obs_used: number of observations used for orbit determination (per CDM)
+x_recommended_od_span: recommended length of update interval for orbit determination [days]
+x_residuals_accepted: orbit determination residuals
+x_time_lastob_end: end of the time interval in days (with respect to the CDM creation epoch) of the last accepted observation used in the orbit determination
+x_time_lastob_start: start of the time in days (with respect to the CDM creation epoch) of the last accepted observation used in the orbit determination
+x_weighted_rms: root-mean-square in least-squares orbit determination
